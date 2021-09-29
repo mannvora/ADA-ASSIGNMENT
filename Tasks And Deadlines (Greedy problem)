@@ -1,0 +1,54 @@
+https://cses.fi/problemset/task/1630#:~:text=CSES%20%2D%20Tasks%20and%20Deadlines&text=You%20have%20to%20process%20n,f%20is%20your%20finishing%20time. ( CSES GREEDY SORTINGS) 
+
+   #include<bits/stdc++.h>
+    
+    #define ll long long int
+    #define pb push_back
+    #define ff first
+    #define ss second
+    #define lowb(a, x) ( lower_bound((a).begin(), (a).end(), (x)) - (a).begin())
+    #define uppb(a, x) ( upper_bound((a).begin(), (a).end(), (x)) - (a).begin())
+    #define all(x)(x).begin(), (x).end()
+    #define show(A) for (auto i: A) cout << i << " "; cout << '\n';
+    #define show_(A, n) F(i, n) { show(A[i]) }
+    #define INF 1000000000000000000
+    
+    template<typename T,typename T1>T amax(T &a,T1 b){if(b>a)a=b;return a;}
+    template<typename T,typename T1>T amin(T &a,T1 b){if(b<a)a=b;return a;}
+     
+    
+    using namespace std;
+    
+    const int M = 1e9 + 7;
+
+    void solve() {
+        ll n;
+        cin >> n;
+        
+        vector<pair<ll, ll>> v(n);
+        
+        for(int i = 0; i < n; i++)
+        {
+            cin >> v[i].ff >> v[i].ss;
+        }
+        
+        ll ans = 0, time_elapsed = 0;
+        
+        sort(all(v));
+        
+        for(int i = 0; i < n; i++)
+        {
+            time_elapsed += v[i].ff;
+            ans += (v[i].ss - time_elapsed);
+        }
+        
+        cout << ans << "\n";
+    }
+    
+    int main() {
+      int t=1;
+    //  cin >> t;
+      while (t--) {
+        solve();
+      }
+    }
