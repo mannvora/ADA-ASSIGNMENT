@@ -1,0 +1,102 @@
+Problem Link : https://cses.fi/problemset/task/1679 (CSES)
+  #include<bits/stdc++.h>
+    
+    #define ll long long int
+    #define pb push_back
+    #define ff first
+    #define ss second
+    #define lowb(a, x) ( lower_bound((a).begin(), (a).end(), (x)) - (a).begin())
+    #define uppb(a, x) ( upper_bound((a).begin(), (a).end(), (x)) - (a).begin())
+    #define all(x)(x).begin(), (x).end()
+    #define show(A) for (auto i: A) cout << i << " "; cout << '\n';
+    #define show_(A, n) F(i, n) { show(A[i]) }
+    #define INF 1000000000000000000
+    
+    template<typename T,typename T1>T amax(T &a,T1 b){if(b>a)a=b;return a;}
+    template<typename T,typename T1>T amin(T &a,T1 b){if(b<a)a=b;return a;}
+     
+    
+    using namespace std;
+
+    const int M = 1e9 + 7;
+    
+    const int N = 200005;
+    vector<int> v[N];
+    vector<int> res;
+    int indeg[N], vis[N], par[N];
+    int n, m;
+    bool cycle = false;
+    
+    void cycle_check(int node,int parent)
+    {
+        vis[node] = 1;
+        par[node] = parent;
+        
+        for(auto child: v[node])
+        {
+           if(!vis[child])
+           {
+               cycle_check(child, node);
+           }
+           else if(vis[child] == 1)
+           {
+               cycle = true;
+           }
+        }
+        vis[node] = 2;
+    }
+    
+    void kahn(){
+        queue<int> q;
+        for(int i = 1; i <= n; i++)
+        {
+            if(indeg[i]==0)
+            q.push(i);
+        }
+        
+        while(!q.empty())
+        {
+            int curr = q.front();
+            res.pb(curr);
+            q.pop();
+            for(auto child: v[curr])
+            {
+                indeg[child]--;
+                if(indeg[child] == 0)
+                q.push(child);
+            }
+        }
+        
+        if(cycle)
+            cout<<"IMPOSSIBLE\n";
+        else{
+            for(auto node : res)
+            cout << node << " ";
+        }
+    }
+    
+    void solve() {
+        int  x, y;
+        cin >> n >> m;
+        
+        for(int i = 0; i < m; i++)
+        {
+            cin >> x >> y;
+            v[x].pb(y);
+            indeg[y]++;
+        }
+        
+        for(int i = 1; i <= n; i++){
+            if(!vis[i])
+                cycle_check(i, -1);
+        }
+        kahn();
+    }
+    
+    int main() {
+      int t=1;
+     // cin >> t;
+      while (t--) {
+        solve();
+      }
+    }
