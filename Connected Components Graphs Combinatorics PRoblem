@@ -1,0 +1,144 @@
+https://codeforces.com/problemset/problem/1534/C
+
+    #include<bits/stdc++.h>
+    
+    #define ll long long int
+    #define pb push_back
+    #define ff first
+    #define ss second
+    #define lowb(a, x) ( lower_bound((a).begin(), (a).end(), (x)) - (a).begin())
+    #define uppb(a, x) ( upper_bound((a).begin(), (a).end(), (x)) - (a).begin())
+    #define all(x)(x).begin(), (x).end()
+    #define show(A) for (auto i: A) cout << i << " "; cout << '\n';
+    #define show_(A, n) F(i, n) { show(A[i]) }
+    #define INF 1000000000000000000
+    
+    template<typename T,typename T1>T amax(T &a,T1 b){if(b>a)a=b;return a;}
+    template<typename T,typename T1>T amin(T &a,T1 b){if(b<a)a=b;return a;}
+     
+    
+    using namespace std;
+    using ld = long double;
+    using vi = vector < int > ;
+    using mi = map < int, int > ;
+    using pi = pair < int, int > ;
+    
+    const int M = 1e9 + 7;
+    long long mod(long long x) {
+    	return ((x % M + M) % M);
+    }
+    long long add(long long a, long long b) {
+    	return mod(mod(a) + mod(b));
+    }
+    long long mul(long long a, long long b) {
+    	return mod(mod(a) * mod(b));
+    }
+    
+    ll bin(ll a, ll b)
+    {
+    	if (b == 0)
+    		return 1;
+    	ll  res = bin(a, b / 2);
+    	if (b % 2)
+    		return res * res * a;
+    	else
+    		return res * res;
+    }
+    
+    ll exponentMod(ll A, ll B, ll C)
+    {
+    	if (A == 0)
+    		return 0;
+    	if (B == 0)
+    		return 1;
+    
+    	ll y;
+    	if (B % 2 == 0) {
+    		y = exponentMod(A, B / 2, C);
+    		y = (y * y) % C;
+    	}
+    
+    	else {
+    		y = A % C;
+    		y = (y * exponentMod(A, B - 1, C) % C) % C;
+    	}
+    
+    	return (ll)((y + C) % C);
+    }
+    
+    ll isprime(ll x)
+    {
+    	ll i, res = 1;
+    	for (i = 2; i <= sqrt(x); i++)
+    	{
+    		if (x % i == 0)
+    		{
+    			res = i;
+    			break;
+    		}
+    	}
+    	return res;
+    }
+    
+    const int N = 400005;
+    vector<int> v[N];
+    int vis[N];
+    
+    void dfs(int u)
+    {
+        vis[u] = 1;
+        for(auto child: v[u])
+        {
+            if(!vis[child])
+            {
+                dfs(child);
+            }
+        }
+    }
+    
+    void solve() {
+        int n,count=0;
+        cin>>n;
+        
+        for(int i=1;i<=n;i++)
+        {
+            v[i].clear();
+            vis[i] = 0;
+        }
+        
+        int a[n+1],b[n+1],i;
+        
+        for(i=0;i<n;i++)
+        {
+            cin>>a[i];
+        }
+        for(i=0;i<n;i++)
+        {
+            cin>>b[i];
+        }
+        
+        for(i=0;i<n;i++)
+        {
+            v[a[i]].pb(b[i]);
+            v[b[i]].pb(a[i]);
+        }
+        
+        for(i=1;i<=n;i++)
+        {
+            if(!vis[i])
+            {
+                dfs(i);
+                count++;
+            }
+        }
+        
+        cout<<exponentMod(2,count,M)<<"\n";
+    }
+    
+    int main() {
+      int t=1;
+      cin >> t;
+      while (t--) {
+        solve();
+      }
+    }
