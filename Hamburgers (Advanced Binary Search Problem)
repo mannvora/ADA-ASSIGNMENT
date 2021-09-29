@@ -1,0 +1,126 @@
+https://codeforces.com/problemset/problem/371/C
+
+#include<bits/stdc++.h>
+
+#define ll long long int
+#define pb push_back
+#define ff first
+#define ss second
+#define F(i, n) for (int i = 0; i < n; i++)
+#define all(x)(x).begin(), (x).end()
+#define show(A) for (auto i: A) cout << i << " "; cout << '\n';
+#define show_(A, n) F(i, n) { show(A[i]) }
+
+template<typename T,typename T1>T amax(T &a,T1 b){if(b>a)a=b;return a;}
+template<typename T,typename T1>T amin(T &a,T1 b){if(b<a)a=b;return a;}
+ 
+
+using namespace std;
+using ld = long double;
+using vi = vector < int > ;
+using mi = map < int, int > ;
+using pi = pair < int, int > ;
+
+const int M = 1e9 + 7;
+long long mod(long long x) {
+	return ((x % M + M) % M);
+}
+long long add(long long a, long long b) {
+	return mod(mod(a) + mod(b));
+}
+long long mul(long long a, long long b) {
+	return mod(mod(a) * mod(b));
+}
+
+ll bin(ll a, ll b)
+{
+	if (b == 0)
+		return 1;
+	ll  res = bin(a, b / 2);
+	if (b % 2)
+		return res * res * a;
+	else
+		return res * res;
+}
+
+ll exponentMod(ll A, ll B, ll C)
+{
+	if (A == 0)
+		return 0;
+	if (B == 0)
+		return 1;
+
+	ll y;
+	if (B % 2 == 0) {
+		y = exponentMod(A, B / 2, C);
+		y = (y * y) % C;
+	}
+
+	else {
+		y = A % C;
+		y = (y * exponentMod(A, B - 1, C) % C) % C;
+	}
+
+	return (ll)((y + C) % C);
+}
+
+ll isprime(ll x)
+{
+	ll i, res = 1;
+	for (i = 2; i <= sqrt(x); i++)
+	{
+		if (x % i == 0)
+		{
+			res = i;
+			break;
+		}
+	}
+	return res;
+}
+
+ll gcd(ll a, ll b)
+{
+	if (b == 0)
+		return a;
+	else
+		return gcd(b, a % b);
+}
+
+int n[3];
+int p[3];
+int cnt[3];
+ll r;
+string s;
+ 
+bool can(ll x) {
+	ll need = 0;
+	for(int i = 0 ; i < 3 ; i++) {
+		ll req = max(0ll,cnt[i]*x - n[i]);
+		need += req * p[i];
+	}
+	return need <= r;
+}
+ 
+int main() {
+	cin >> s;
+	for(char x : s) {
+		if(x == 'B') cnt[0]++;
+		else if(x == 'S') cnt[1]++;
+		else cnt[2]++;
+	}
+	for(int i = 0 ; i < 3 ; i++) cin >> n[i];
+	for(int i = 0 ; i < 3 ; i++) cin >> p[i];
+	cin >> r;
+ 
+	ll lo = 0, hi = 1e13;
+	while(lo < hi) {
+		ll mid = (lo + hi+1) / 2;
+		if(can(mid))
+			lo = mid;
+		else
+			hi = mid-1;
+	}
+ 
+	cout << lo << endl;
+	return 0;
+}
