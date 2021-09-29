@@ -1,0 +1,56 @@
+https://cses.fi/problemset/task/1620 (CSES Binary Search)
+
+ #include<bits/stdc++.h>
+    
+    #define ll long long int
+    #define pb push_back
+    #define ff first
+    #define ss second
+    #define lowb(a, x) ( lower_bound((a).begin(), (a).end(), (x)) - (a).begin())
+    #define uppb(a, x) ( upper_bound((a).begin(), (a).end(), (x)) - (a).begin())
+    #define all(x)(x).begin(), (x).end()
+    #define show(A) for (auto i: A) cout << i << " "; cout << '\n';
+    #define show_(A, n) F(i, n) { show(A[i]) }
+    #define INF 1000000000000000000
+    
+    template<typename T,typename T1>T amax(T &a,T1 b){if(b>a)a=b;return a;}
+    template<typename T,typename T1>T amin(T &a,T1 b){if(b<a)a=b;return a;}
+     
+    
+    using namespace std;
+
+    const int M = 1e9 + 7;
+    
+    void solve() {
+        int n; ll t; cin >> n >> t;
+	    vector<ll> k(n);
+	    for (int i = 0; i < n; i++) {
+		    cin >> k[i];
+	    }
+	    ll lo = 0; ll hi = 1e18; ll ans = 0;
+	    while (lo <= hi) {
+		    ll mid = (lo + hi) /2;
+		    ll sum = 0;
+		    for (int i = 0; i < n; i++) {
+			    sum += (mid / k[i]);
+			    if(sum >= t){ //deal with overflow
+				    break;
+			    }
+		    }
+		    if (sum >= t) {
+			    ans = mid;
+			    hi = mid-1;
+		    } else {
+			    lo = mid+1;
+		    }
+	    }
+	cout << ans << "\n";
+    }
+    
+    int main() {
+      int t = 1;
+    //  cin >> t;
+      while (t--) {
+        solve();
+      }
+    }
