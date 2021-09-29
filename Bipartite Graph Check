@@ -1,0 +1,140 @@
+https://codeforces.com/problemset/problem/1144/F
+
+/*
+“The only way that we can live is if we grow.
+ The only way we can grow is if we change. 
+The only way we can change is if we learn.
+ The only way we can learn is if we are exposed.
+ And the only way that we are exposed is if we throw ourselves into the open.”
+ ***************************************   ************************   **********************************
+*/
+#include<bits/stdc++.h>
+
+#define ll long long int
+#define pb push_back
+#define ff first
+#define ss second
+#define fri(start , end , step)  for(int i = start; i < end ; i = i + step)
+#define frj(start , end , step)  for(int j = start; j < end ; j = j + step)
+#define all(x)(x).begin(), (x).end()
+#define show(A) for (auto i: A) cout << i << " "; cout << '\n';
+#define show_(A, n) F(i, n) { show(A[i]) }
+#define read(x) int x; cin>>x
+
+template<typename T,typename T1>T amax(T &a,T1 b){if(b>a)a=b;return a;}
+template<typename T,typename T1>T amin(T &a,T1 b){if(b<a)a=b;return a;}
+ 
+
+using namespace std;
+using ld = long double;
+using vi = vector < int > ;
+using mi = map < int, int > ;
+using pi = pair < int, int > ;
+
+const int M = 1e9 + 7;
+long long mod(long long x) {
+	return ((x % M + M) % M);
+}
+long long add(long long a, long long b) {
+	return mod(mod(a) + mod(b));
+}
+long long mul(long long a, long long b) {
+	return mod(mod(a) * mod(b));
+}
+
+ll bin(ll a, ll b)
+{
+	if (b == 0)
+		return 1;
+	ll  res = bin(a, b / 2);
+	if (b % 2)
+		return res * res * a;
+	else
+		return res * res;
+}
+
+ll exponentMod(ll A, ll B, ll C)
+{
+	if (A == 0)
+		return 0;
+	if (B == 0)
+		return 1;
+
+	ll y;
+	if (B % 2 == 0) {
+		y = exponentMod(A, B / 2, C);
+		y = (y * y) % C;
+	}
+
+	else {
+		y = A % C;
+		y = (y * exponentMod(A, B - 1, C) % C) % C;
+	}
+
+	return (ll)((y + C) % C);
+}
+
+ll isprime(ll x)
+{
+	ll i, res = 1;
+	for (i = 2; i <= sqrt(x); i++)
+	{
+		if (x % i == 0)
+		{
+			res = i;
+			break;
+		}
+	}
+	return res;
+}
+
+const int N = 200005;
+
+int n, m;
+vector<int> g[N];
+vector<pair<int, int>> e;
+
+bool bipartite;
+vector<int> color;
+
+void dfs(int v, int c) {
+	color[v] = c;
+	for (auto child : g[v]) {
+		if (color[child] == -1) {
+			dfs(child, c ^ 1);
+		} else {
+			if (color[child] == color[v]) {
+				bipartite = false;
+			}
+		}
+	}
+}
+
+int main() {
+	cin >> n >> m;
+	for (int i = 0; i < m; ++i) {
+		int x, y;
+		cin >> x >> y;
+		--x, --y;
+		g[x].push_back(y);
+		g[y].push_back(x);
+		e.push_back(make_pair(x, y));
+	}
+	
+	bipartite = true;
+	color = vector<int>(n, -1);
+	dfs(0, 0);
+	
+	if (!bipartite) {
+		cout << "NO" << endl;
+		return 0;
+	}
+	
+	cout << "YES" << endl;
+	for (int i = 0; i < m; ++i) {
+		cout << (color[e[i].first] < color[e[i].second]);
+	}
+	cout << endl;
+	
+	return 0;
+}
